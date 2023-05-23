@@ -14,6 +14,8 @@
 # CONFIG_TRUSTED_KEYS_TPM is not set
 #Revert crypto, using ref from Snappy kernel.
 #RuhanvdB -> Enable trusted keys based on CAAM
+#Add sysfs support on kernel
+CONFIG_GPIO_SYSFS=y
 CONFIG_9P_FS=y
 CONFIG_ACPI=y
 CONFIG_ACPI_APEI=y
