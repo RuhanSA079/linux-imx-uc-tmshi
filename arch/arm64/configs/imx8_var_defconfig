@@ -17,6 +17,8 @@
 #Add sysfs support on kernel
 CONFIG_SYSFS=y
 CONFIG_GPIO_SYSFS=y
+#add support for MCP34xx ADC
+CONFIG_MCP3422=y
 CONFIG_9P_FS=y
 CONFIG_ACPI=y
 CONFIG_ACPI_APEI=y
