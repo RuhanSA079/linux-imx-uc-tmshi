@@ -59,7 +59,7 @@ config DEBUG_GPIO
 	  that are most common when setting up new platforms or boards.
 
 config GPIO_SYSFS
-	bool "/sys/class/gpio/... (sysfs interface)" if EXPERT
+	bool "/sys/class/gpio/... (sysfs interface)"
 	depends on SYSFS
 	select GPIO_CDEV # We need to encourage the new ABI
 	help
@@ -71,7 +71,7 @@ config GPIO_SYSFS
 
 config GPIO_CDEV
 	bool
-	prompt "Character device (/dev/gpiochipN) support" if EXPERT
+	prompt "Character device (/dev/gpiochipN) support"
 	default y
 	help
 	  Say Y here to add the character device /dev/gpiochipN interface
