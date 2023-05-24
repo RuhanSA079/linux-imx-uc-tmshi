@@ -61,7 +61,6 @@ config DEBUG_GPIO
 config GPIO_SYSFS
 	bool "/sys/class/gpio/... (sysfs interface)"
 	depends on SYSFS
-	select GPIO_CDEV # We need to encourage the new ABI
 	help
 	  Say Y here to add the legacy sysfs interface for GPIOs.
 
