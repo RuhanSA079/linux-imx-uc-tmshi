@@ -4,6 +4,7 @@
  * Author: Jon Ringle <jringle@gridpoint.com>
  *
  *  Based on max310x.c, by Alexander Shiyan <shc_work@mail.ru>
+ *  Patched for enabing RS485 usage on DT
  */
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
@@ -1038,6 +1039,7 @@ static int sc16is7xx_startup(struct uart_port *port)
 			      SC16IS7XX_EFCR_RXDISABLE_BIT |
 			      SC16IS7XX_EFCR_TXDISABLE_BIT,
 			      0);
+	sc16is7xx_reconf_rs485(port);//IMX
 
 	/* Enable RX, TX interrupts */
 	val = SC16IS7XX_IER_RDI_BIT | SC16IS7XX_IER_THRI_BIT;
@@ -1193,6 +1195,7 @@ static int sc16is7xx_probe(struct device *dev,
 	 * tell us if we are really connected to the correct device.
 	 * The best we can do is to check if communication is at all possible.
 	 */
+	printk("Probing SC16IS7XX");
 	ret = regmap_read(regmap,
 			  SC16IS7XX_LSR_REG << SC16IS7XX_REG_SHIFT, &val);
 	if (ret < 0)
@@ -1281,7 +1284,14 @@ static int sc16is7xx_probe(struct device *dev,
 			ret = -ENOMEM;
 			goto out_ports;
 		}
-
+		printk("Get 485 Flags from DT");
+		ret = uart_get_rs485_mode( &s->p[i].port);//uart_get_rs485_mode(dev, &s->p[i].port.rs485);//IMX
+		if (ret)
+		{
+				printk("Error during get 485 Flags from DT");
+				goto out_ports;
+		}
+			
 		/* Disable all interrupts */
 		sc16is7xx_port_write(&s->p[i].port, SC16IS7XX_IER_REG, 0);
 		/* Disable TX/RX */
@@ -1527,7 +1537,7 @@ static struct i2c_driver sc16is7xx_i2c_uart_driver = {
 static int __init sc16is7xx_init(void)
 {
 	int ret;
-
+	pr_err("Registering UART driver \n");
 	ret = uart_register_driver(&sc16is7xx_uart);
 	if (ret) {
 		pr_err("Registering UART driver failed\n");
