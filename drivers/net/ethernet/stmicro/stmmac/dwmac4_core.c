@@ -449,12 +449,12 @@ static int dwmac4_add_hw_vlan_rx_fltr(struct net_device *dev,
 
 	if (vid > 4095)
 		return -EINVAL;
-
-	if (hw->promisc) {
-		netdev_err(dev,
-			   "Adding VLAN in promisc mode not supported\n");
-		return -EPERM;
-	}
+	// Fixes bridge-mode -> https://community.nxp.com/t5/i-MX-Processors-Knowledge-Base/Workaround-for-issue-Bridge-mode-on-EQoS-module-will-not-work/ta-p/1559302
+	//if (hw->promisc) {
+	//	netdev_err(dev,
+	//		   "Adding VLAN in promisc mode not supported\n");
+	//	return -EPERM;
+	//}
 
 	/* Single Rx VLAN Filter */
 	if (hw->num_vlan == 1) {
@@ -504,12 +504,12 @@ static int dwmac4_del_hw_vlan_rx_fltr(struct net_device *dev,
 				      __be16 proto, u16 vid)
 {
 	int i, ret = 0;
-
-	if (hw->promisc) {
-		netdev_err(dev,
-			   "Deleting VLAN in promisc mode not supported\n");
-		return -EPERM;
-	}
+	// Fixes bridge-mode -> https://community.nxp.com/t5/i-MX-Processors-Knowledge-Base/Workaround-for-issue-Bridge-mode-on-EQoS-module-will-not-work/ta-p/1559302
+	//if (hw->promisc) {
+	//	netdev_err(dev,
+	//		   "Deleting VLAN in promisc mode not supported\n");
+	//	return -EPERM;
+	//}
 
 	/* Single Rx VLAN Filter */
 	if (hw->num_vlan == 1) {
