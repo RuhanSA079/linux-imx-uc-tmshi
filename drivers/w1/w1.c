@@ -744,9 +744,12 @@ int w1_attach_slave_device(struct w1_master *dev, struct w1_reg_num *rn)
 		  rn->family, (unsigned long long)rn->id, rn->crc);
 
 	/* slave modules need to be loaded in a context with unlocked mutex */
-	mutex_unlock(&dev->mutex);
-	request_module("w1-family-0x%02X", rn->family);
-	mutex_lock(&dev->mutex);
+	//Apparent bug in native Maxim chips that can cause some lockups when transacting with the 1-wire chips over i2c.
+	//Fix -> https://github.com/owfs/owfs/issues/86#issuecomment-821835702
+	//Not sure if this will fix it.
+	//mutex_unlock(&dev->mutex);
+	//request_module("w1-family-0x%02X", rn->family);
+	//mutex_lock(&dev->mutex);
 
 	spin_lock(&w1_flock);
 	f = w1_family_registered(rn->family);
